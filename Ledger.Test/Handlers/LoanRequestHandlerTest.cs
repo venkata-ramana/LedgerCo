@@ -28,7 +28,7 @@ namespace Ledger.Test.Handlers
             loanService = new Mock<ILoanService>();
             loanRequest = MockRequests._loanFaker.Generate(1).First();
             loanRequestHandler = new LoanRequestHandler(loanService.Object);
-            loanRequestHandler.LoanRequest = loanRequest;
+            loanRequestHandler.SetRequest(loanRequest);
         }
 
         [Fact]

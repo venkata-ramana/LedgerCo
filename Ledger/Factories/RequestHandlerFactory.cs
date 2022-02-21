@@ -36,9 +36,8 @@ namespace Ledger.Factories
             var rateOfInterest = args.ElementAtOrDefault(5);
             decimal.TryParse(rateOfInterest, out decimal roi);
 
-            LoanRequest loanRequest = new LoanRequest(bankName, borrowerName, principalAmount, loanTenure, roi);
             var loanRequestHandler = DependencyResolver.Resolve<LoanRequestHandler>();
-            loanRequestHandler.LoanRequest = loanRequest;
+            loanRequestHandler.SetRequest(new LoanRequest(bankName, borrowerName, principalAmount, loanTenure, roi));
             return loanRequestHandler;
         }
 
@@ -51,9 +50,8 @@ namespace Ledger.Factories
             var emi = args.ElementAtOrDefault(4);
             int.TryParse(emi, out int emiNo);
 
-            PaymentRequest paymentRequest = new PaymentRequest(bankName, borrowerName, lumpSumAmount, emiNo);
             var paymentRequestHandler = DependencyResolver.Resolve<PaymentRequestHandler>();
-            paymentRequestHandler.PaymentRequest = paymentRequest;
+            paymentRequestHandler.SetRequest(new PaymentRequest(bankName, borrowerName, lumpSumAmount, emiNo));
             return paymentRequestHandler;
         }
 
@@ -64,9 +62,8 @@ namespace Ledger.Factories
             var emi = args.ElementAtOrDefault(3);
             int.TryParse(emi, out int emiNo);
 
-            BalanceRequest balanceRequest = new BalanceRequest(bankName, borrowerName, emiNo);
             var balanceHandler = DependencyResolver.Resolve<BalanceRequestHandler>();
-            balanceHandler.BalanceRequest = balanceRequest;
+            balanceHandler.SetRequest(new BalanceRequest(bankName, borrowerName, emiNo));
             return balanceHandler;
         }
     }

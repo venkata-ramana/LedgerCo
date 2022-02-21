@@ -9,7 +9,7 @@ namespace Ledger.Handlers
 {
     public class LoanRequestHandler : IRequestHandler
     {
-        public LoanRequest LoanRequest { get; set; }
+        private LoanRequest loanRequest { get; set; }
 
         private readonly ILoanService loanService;
 
@@ -18,15 +18,20 @@ namespace Ledger.Handlers
             this.loanService = loanService;
         }
 
+        public void SetRequest(BaseRequest request)
+        {
+            this.loanRequest = (LoanRequest)request;
+        }
+
         public async Task<BaseResponse> ProcessAsync()
         {
-            var loanDetails = await loanService.GetLoanDetailsAsync(LoanRequest.BankName, LoanRequest.BorrowerName);
+            var loanDetails = await loanService.GetLoanDetailsAsync(loanRequest.BankName, loanRequest.BorrowerName);
             if (loanDetails != null)
             {
                 throw new ArgumentException(Constants.ErrorMessages.LoanRecordNotFound);
             }
 
-            var loanDetail = LoanRequest.ToLoanDetailModel();
+            var loanDetail = loanRequest.ToLoanDetailModel();
             var isSaved = await loanService.SaveLoanDetailsAsync(loanDetail);
             return new BaseResponse() { IsSuccess = isSaved };
         }

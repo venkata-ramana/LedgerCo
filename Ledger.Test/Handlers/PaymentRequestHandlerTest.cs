@@ -35,7 +35,7 @@ namespace Ledger.Test.Handlers
             paymentRequestHandler = new PaymentRequestHandler(loanService.Object, paymentService.Object);
             loanRequest = MockRequests._loanFaker.Generate(1).First();
             paymentRequest = MockRequests._paymentFaker.Generate(1).First();
-            paymentRequestHandler.PaymentRequest = paymentRequest;
+            paymentRequestHandler.SetRequest(paymentRequest);
         }
 
         [Fact]

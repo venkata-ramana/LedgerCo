@@ -24,7 +24,7 @@ namespace Ledger.Test.Handlers
             loanService = new Mock<ILoanService>();
             balanceRequestHandler = new BalanceRequestHandler(loanService.Object);
             balanceRequest = Mocks.MockRequests._balanceFaker.Generate(1).First();
-            balanceRequestHandler.BalanceRequest = balanceRequest;
+            balanceRequestHandler.SetRequest(balanceRequest);
         }
 
         [Fact]
@@ -43,7 +43,7 @@ namespace Ledger.Test.Handlers
             var loanRequest = new LoanRequest(bankName, borrowerName, 10000, 5, 4);
             var loanDetail = loanRequest.ToLoanDetailModel();
             var balanceRequest = new BalanceRequest(bankName, borrowerName, 5);
-            balanceRequestHandler.BalanceRequest = balanceRequest;
+            balanceRequestHandler.SetRequest(balanceRequest);
             var validBalanceResponse = MockResponse.GetValidBalanceResponseWithoutPayment();
             loanService.Setup(x => x.GetLoanDetailsAsync(bankName, borrowerName)).ReturnsAsync(loanDetail);
             var response = await balanceRequestHandler.ProcessAsync();
@@ -63,7 +63,7 @@ namespace Ledger.Test.Handlers
             loanDetail.Payments.Add(new Models.Payment() { Amount = 1000, EmiNumber = 5 });
 
             var balanceRequest = new BalanceRequest(bankName, borrowerName, 6);
-            balanceRequestHandler.BalanceRequest = balanceRequest;
+            balanceRequestHandler.SetRequest(balanceRequest);
             var validBalanceResponse = MockResponse.GetValidBalanceResponseWithPayment();
             loanService.Setup(x => x.GetLoanDetailsAsync(bankName, borrowerName)).ReturnsAsync(loanDetail);
             var response = await balanceRequestHandler.ProcessAsync();

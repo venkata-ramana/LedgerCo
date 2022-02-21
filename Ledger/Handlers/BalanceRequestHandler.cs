@@ -8,7 +8,7 @@ namespace Ledger.Handlers
 {
     public class BalanceRequestHandler : IRequestHandler
     {
-        public BalanceRequest BalanceRequest { get; set; }
+        private BalanceRequest balanceRequest { get; set; }
 
         private ILoanService LoanService { get; set; }
 
@@ -17,15 +17,20 @@ namespace Ledger.Handlers
             this.LoanService = loanService;
         }
 
+        public void SetRequest(BaseRequest request)
+        {
+            this.balanceRequest = (BalanceRequest)request;
+        }
+
         public async Task<BaseResponse> ProcessAsync()
         {
-            var existingLoanRecord = await LoanService.GetLoanDetailsAsync(BalanceRequest.BankName, BalanceRequest.BorrowerName);
+            var existingLoanRecord = await LoanService.GetLoanDetailsAsync(balanceRequest.BankName, balanceRequest.BorrowerName);
             if (existingLoanRecord == null)
                 throw new ArgumentException(Constants.ErrorMessages.LoanRecordNotFound);
 
             var emiAmount = existingLoanRecord.EmiAmount();
-            var totalAmountByEmi = BalanceRequest.Emi * emiAmount;
-            var totalLumpSumPaid = existingLoanRecord.LumpSumPaidTillEmiNumber(BalanceRequest.Emi);
+            var totalAmountByEmi = balanceRequest.Emi * emiAmount;
+            var totalLumpSumPaid = existingLoanRecord.LumpSumPaidTillEmiNumber(balanceRequest.Emi);
 
             var totalAmountPaidTillEmi = totalAmountByEmi + totalLumpSumPaid;
 
