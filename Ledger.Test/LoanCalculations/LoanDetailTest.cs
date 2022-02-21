@@ -13,6 +13,7 @@ namespace Ledger.Test.LoanCalculations
             loanDetail.BankName = "IDIDI";
             loanDetail.BorrowerName = "DALE";
             loanDetail.LoanTenure = 0;
+
             Assert.Equal(decimal.Zero, loanDetail.TotalAmountToBeRepaid());
         }
 
@@ -25,6 +26,7 @@ namespace Ledger.Test.LoanCalculations
             loanDetail.PrincipalAmount = 100;
             loanDetail.RateOfInterest = 10;
             loanDetail.LoanTenure = 1;
+
             Assert.Equal(110, loanDetail.TotalAmountToBeRepaid());
         }
 
@@ -37,6 +39,7 @@ namespace Ledger.Test.LoanCalculations
             loanDetail.PrincipalAmount = 100;
             loanDetail.RateOfInterest = 10;
             loanDetail.LoanTenure = 0;
+
             Assert.Equal(decimal.Zero, loanDetail.EmiAmount());
         }
 
@@ -49,6 +52,7 @@ namespace Ledger.Test.LoanCalculations
             loanDetail.PrincipalAmount = 100;
             loanDetail.RateOfInterest = 10;
             loanDetail.LoanTenure = 1;
+
             Assert.Equal(10, loanDetail.EmiAmount());
         }
 
@@ -61,6 +65,7 @@ namespace Ledger.Test.LoanCalculations
             loanDetail.PrincipalAmount = 100;
             loanDetail.RateOfInterest = 10;
             loanDetail.LoanTenure = 1;
+
             Assert.Equal(decimal.Zero, loanDetail.LumpSumPaidTillEmiNumber(1));
         }
 
@@ -77,6 +82,7 @@ namespace Ledger.Test.LoanCalculations
             loanDetail.Payments.Add(new Payment(3, 200));
             loanDetail.Payments.Add(new Payment(5, 200));
             loanDetail.Payments.Add(new Payment(9, 200));
+
             Assert.Equal(200, loanDetail.LumpSumPaidTillEmiNumber(4));
             Assert.Equal(400, loanDetail.LumpSumPaidTillEmiNumber(6));
             Assert.Equal(600, loanDetail.LumpSumPaidTillEmiNumber(9));

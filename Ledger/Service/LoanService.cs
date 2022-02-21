@@ -3,14 +3,14 @@ using System.Threading.Tasks;
 
 namespace Ledger.Service
 {
-    internal class LoanService : BaseService
+    public class LoanService : BaseService, ILoanService
     {
-        internal async Task<LoanDetail> GetLoanDetailsAsync(string bankName, string borrowerName)
+        public async Task<LoanDetail> GetLoanDetailsAsync(string bankName, string borrowerName)
         {
             return await DataStore.GetLoanDetailsAsync(bankName, borrowerName);
         }
 
-        internal async Task<bool> SaveLoanDetailsAsync(LoanDetail loanDetail)
+        public async Task<bool> SaveLoanDetailsAsync(LoanDetail loanDetail)
         {
             return await DataStore.SaveLoanDetailsAsync(loanDetail);
         }

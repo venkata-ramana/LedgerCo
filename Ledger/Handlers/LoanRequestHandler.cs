@@ -9,13 +9,13 @@ namespace Ledger.Handlers
 {
     public class LoanRequestHandler : IRequestHandler
     {
-        private readonly LoanRequest loanRequest;
-        private readonly LoanService loanService;
+        public LoanRequest loanRequest { get; set; }
 
-        public LoanRequestHandler(LoanRequest loanRequest)
+        private readonly ILoanService loanService;
+
+        public LoanRequestHandler(ILoanService loanService)
         {
-            this.loanRequest = loanRequest;
-            loanService = new LoanService();
+            this.loanService = loanService;
         }
 
         public async Task<BaseResponse> ProcessAsync()

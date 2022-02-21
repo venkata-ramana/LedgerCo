@@ -20,9 +20,6 @@ namespace Ledger.Factories
                 case Constants.Actions.Payment:
                     handler = GetPaymentHandler(args);
                     break;
-                default:
-                    handler = null;
-                    break;
             }
 
             return handler;
@@ -40,7 +37,9 @@ namespace Ledger.Factories
             decimal.TryParse(rateOfInterest, out decimal roi);
 
             LoanRequest loanRequest = new LoanRequest(bankName, borrowerName, principalAmount, loanTenure, roi);
-            return new LoanRequestHandler(loanRequest);
+            var loadRequestHandler = DependencyResolver.Resolve<LoanRequestHandler>();
+            loadRequestHandler.loanRequest = loanRequest;
+            return loadRequestHandler;
         }
 
         private IRequestHandler GetPaymentHandler(string[] args)
