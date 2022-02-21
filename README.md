@@ -2,7 +2,7 @@
 
 Solution For Ledger Co problem
 
-<img src="ledger.png" alt="a" width="700" height="500"/>
+<img src="ledger.png" alt="a" width="100%" height="500"/>
 
 To build the solution use below command
 
