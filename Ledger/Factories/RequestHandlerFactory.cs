@@ -37,19 +37,37 @@ namespace Ledger.Factories
             decimal.TryParse(rateOfInterest, out decimal roi);
 
             LoanRequest loanRequest = new LoanRequest(bankName, borrowerName, principalAmount, loanTenure, roi);
-            var loadRequestHandler = DependencyResolver.Resolve<LoanRequestHandler>();
-            loadRequestHandler.loanRequest = loanRequest;
-            return loadRequestHandler;
+            var loanRequestHandler = DependencyResolver.Resolve<LoanRequestHandler>();
+            loanRequestHandler.LoanRequest = loanRequest;
+            return loanRequestHandler;
         }
 
         private IRequestHandler GetPaymentHandler(string[] args)
         {
-            return new PaymentRequestHandler();
+            var bankName = args.ElementAtOrDefault(1);
+            var borrowerName = args.ElementAtOrDefault(2);
+            var amount = args.ElementAtOrDefault(3);
+            decimal.TryParse(amount, out decimal lumpSumAmount);
+            var emi = args.ElementAtOrDefault(4);
+            int.TryParse(emi, out int emiNo);
+
+            PaymentRequest paymentRequest = new PaymentRequest(bankName, borrowerName, lumpSumAmount, emiNo);
+            var paymentRequestHandler = DependencyResolver.Resolve<PaymentRequestHandler>();
+            paymentRequestHandler.PaymentRequest = paymentRequest;
+            return paymentRequestHandler;
         }
 
         private IRequestHandler GetBalanceHandler(string[] args)
         {
-            return new BalanceRequestHandler();
+            var bankName = args.ElementAtOrDefault(1);
+            var borrowerName = args.ElementAtOrDefault(2);
+            var emi = args.ElementAtOrDefault(3);
+            int.TryParse(emi, out int emiNo);
+
+            BalanceRequest balanceRequest = new BalanceRequest(bankName, borrowerName, emiNo);
+            var balanceHandler = DependencyResolver.Resolve<BalanceRequestHandler>();
+            balanceHandler.BalanceRequest = balanceRequest;
+            return balanceHandler;
         }
     }
 }

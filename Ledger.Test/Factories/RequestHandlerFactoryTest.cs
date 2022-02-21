@@ -1,6 +1,9 @@
 ﻿using FluentAssertions;
 using Ledger.Factories;
 using Ledger.Handlers;
+using Ledger.Service;
+using Moq;
+using SimpleInjector;
 using Xunit;
 
 namespace Ledger.Test.Factories
@@ -12,6 +15,7 @@ namespace Ledger.Test.Factories
         public RequestHandlerFactoryTest()
         {
             factory = new RequestHandlerFactory();
+            RegisterDependency.Register();
         }
 
         [Fact]

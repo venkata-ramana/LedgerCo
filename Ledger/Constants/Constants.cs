@@ -12,6 +12,9 @@
         public static string FilePathError = "Need valid file path";
         public static string LoanRecodExists = "Loan Record already exists";
         public static string LoanRecordNotFound = "Loan Record not found";
+        public static string InvalidEmi = "Requested Emi is invalid";
+        public static string ProvideInput = "Please provide inputs";
+        public static string InvalidCommand = "Command not identified";
     }
 
     public static class Actions

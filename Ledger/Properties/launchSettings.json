@@ -2,7 +2,7 @@
   "profiles": {
     "Ledger": {
       "commandName": "Project",
-      "commandLineArgs": "Input1.txt"
+      "commandLineArgs": "Input2.txt"
     }
   }
 }

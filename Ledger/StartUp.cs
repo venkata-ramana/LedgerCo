@@ -1,6 +1,7 @@
 ﻿using Ledger.Constants;
 using Ledger.Factories;
 using Ledger.Handlers;
+using Ledger.Helpers;
 using Ledger.Processors;
 using Ledger.Service;
 using SimpleInjector;
@@ -27,7 +28,10 @@ namespace Ledger
         {
             container = new Container();
             container.Register<ILoanService, LoanService>();
+            container.Register<IPaymentService, PaymentService>();
             container.Register<LoanRequestHandler>();
+            container.Register<PaymentRequestHandler>();
+            container.Register<BalanceRequestHandler>();
             container.Verify();
             DependencyResolver.container = container;
 
@@ -40,14 +44,14 @@ namespace Ledger
             {
                 if (args.Length == 0)
                 {
-                    Console.WriteLine("No file path specified as input");
+                    Utils.ConsoleLogError(ErrorMessages.ProvideInput);
                 }
 
                 ProcessCommands(args).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Exception occured {ex.Message}");
+                Utils.ConsoleLogError(ex.Message);
             }
         }
 

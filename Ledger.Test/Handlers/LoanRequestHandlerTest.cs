@@ -28,11 +28,11 @@ namespace Ledger.Test.Handlers
             loanService = new Mock<ILoanService>();
             loanRequest = MockRequests._loanFaker.Generate(1).First();
             loanRequestHandler = new LoanRequestHandler(loanService.Object);
-            loanRequestHandler.loanRequest = loanRequest;
+            loanRequestHandler.LoanRequest = loanRequest;
         }
 
         [Fact]
-        public void Should_Throw_ArgumentException_When_LoanLoanRecordsNotFoundAsync()
+        public void Should_Throw_ArgumentException_When_LoanRecordsNotFoundAsync()
         {
             Func<Task> func = async () => { await loanRequestHandler.ProcessAsync(); };
 
