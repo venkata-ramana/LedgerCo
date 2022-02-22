@@ -40,11 +40,14 @@ namespace Ledger.Processors
                 if (handler == null)
                     Utils.ConsoleLogError(Constants.ErrorMessages.InvalidCommand);
 
-                var response = await handler.ProcessAsync();
-                if (handler.GetType() == typeof(BalanceRequestHandler) && response.IsSuccess)
+                if (handler.ValidateRequest())
                 {
-                    var balanceResponse = (BalanceResponse)response;
-                    Utils.ConsoleLogSuccess($"{balanceResponse.BankName} {balanceResponse.BorrowerName} {balanceResponse.AmountPaid} {balanceResponse.RemainingEmis}");
+                    var response = await handler.ProcessAsync();
+                    if (handler.GetType() == typeof(BalanceRequestHandler) && response.IsSuccess)
+                    {
+                        var balanceResponse = (BalanceResponse)response;
+                        Utils.ConsoleLogSuccess($"{balanceResponse.BankName} {balanceResponse.BorrowerName} {balanceResponse.AmountPaid} {balanceResponse.RemainingEmis}");
+                    }
                 }
             }
         }

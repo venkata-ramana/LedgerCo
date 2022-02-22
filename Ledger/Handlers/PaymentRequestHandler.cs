@@ -26,6 +26,23 @@ namespace Ledger.Handlers
             this.paymentRequest = (PaymentRequest)request;
         }
 
+        public bool ValidateRequest()
+        {
+            if (String.IsNullOrEmpty(paymentRequest.BankName))
+                throw new ArgumentException($"{Constants.Actions.Payment}: {Constants.ErrorMessages.BankNameRequired}");
+
+            if (String.IsNullOrEmpty(paymentRequest.BorrowerName))
+                throw new ArgumentException($"{Constants.Actions.Payment}: {Constants.ErrorMessages.BorrowerNameRequired}");
+
+            if (paymentRequest.Emi <= 0)
+                throw new ArgumentException($"{Constants.Actions.Payment}: {Constants.ErrorMessages.InvalidEmi}");
+
+            if (paymentRequest.LumpsumAmount <= 0)
+                throw new ArgumentException($"{Constants.Actions.Payment}: {Constants.ErrorMessages.InvalidLumpsumAmount}");
+
+            return true;
+        }
+
         public async Task<BaseResponse> ProcessAsync()
         {
             var existingLoanRecord = await LoanService.GetLoanDetailsAsync(paymentRequest.BankName, paymentRequest.BorrowerName);

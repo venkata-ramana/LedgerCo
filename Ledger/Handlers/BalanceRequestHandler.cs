@@ -22,6 +22,20 @@ namespace Ledger.Handlers
             this.balanceRequest = (BalanceRequest)request;
         }
 
+        public bool ValidateRequest()
+        {
+            if (String.IsNullOrEmpty(balanceRequest.BankName))
+                throw new ArgumentException($"{Constants.Actions.Balance}: {Constants.ErrorMessages.BankNameRequired}");
+
+            if (String.IsNullOrEmpty(balanceRequest.BorrowerName))
+                throw new ArgumentException($"{Constants.Actions.Balance}: {Constants.ErrorMessages.BorrowerNameRequired}");
+
+            if (balanceRequest.Emi < 0)
+                throw new ArgumentException($"{Constants.Actions.Balance}: {Constants.ErrorMessages.InvalidEmi}");
+
+            return true;
+        }
+
         public async Task<BaseResponse> ProcessAsync()
         {
             var existingLoanRecord = await LoanService.GetLoanDetailsAsync(balanceRequest.BankName, balanceRequest.BorrowerName);

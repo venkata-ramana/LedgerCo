@@ -8,6 +8,8 @@ namespace Ledger.Handlers
     {
         void SetRequest(BaseRequest request);
 
+        bool ValidateRequest();
+
         Task<BaseResponse> ProcessAsync();
     }
 }
