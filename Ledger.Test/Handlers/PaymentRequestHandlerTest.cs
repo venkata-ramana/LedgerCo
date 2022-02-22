@@ -39,6 +39,50 @@ namespace Ledger.Test.Handlers
         }
 
         [Fact]
+        public void Should_Throw_ArgumentException_When_InvalidBankNameProvided()
+        {
+            paymentRequest.BankName = string.Empty;
+
+            var ex = Assert.Throws<ArgumentException>(() => paymentRequestHandler.ValidateRequest());
+
+            Assert.Equal($"{Constants.Actions.Payment}: {Constants.ErrorMessages.BankNameRequired}", ex.Message);
+        }
+
+        [Fact]
+        public void Should_Throw_ArgumentException_When_InvalidBorrowerProvided()
+        {
+            paymentRequest.BorrowerName = string.Empty;
+
+            var ex = Assert.Throws<ArgumentException>(() => paymentRequestHandler.ValidateRequest());
+
+            Assert.Equal($"{Constants.Actions.Payment}: {Constants.ErrorMessages.BorrowerNameRequired}", ex.Message);
+        }
+
+        [Fact]
+        public void Should_Throw_ArgumentException_When_InvalidEmiProvided()
+        {
+            paymentRequest.Emi = -1;
+            var ex = Assert.Throws<ArgumentException>(() => paymentRequestHandler.ValidateRequest());
+
+            Assert.Equal($"{Constants.Actions.Payment}: {Constants.ErrorMessages.InvalidEmi}", ex.Message);
+        }
+
+        [Fact]
+        public void Should_Throw_ArgumentException_When_InvalidLumpSumProvided()
+        {
+            paymentRequest.LumpsumAmount = 0;
+            var ex = Assert.Throws<ArgumentException>(() => paymentRequestHandler.ValidateRequest());
+
+            Assert.Equal($"{Constants.Actions.Payment}: {Constants.ErrorMessages.InvalidLumpsumAmount}", ex.Message);
+        }
+
+        [Fact]
+        public void Should_Return_True_When_ValidPaymentRequestProvided()
+        {
+            Assert.True(paymentRequestHandler.ValidateRequest());
+        }
+
+        [Fact]
         public void Should_Throw_ArgumentException_When_LoanLoanRecordsNotFoundAsync()
         {
             loanService.Setup(x => x.GetLoanDetailsAsync(It.IsNotNull<string>(), It.IsNotNull<string>())).ReturnsAsync((LoanDetail)null);
@@ -64,7 +108,9 @@ namespace Ledger.Test.Handlers
             var loanDetail = loanRequest.ToLoanDetailModel();
             loanService.Setup(x => x.GetLoanDetailsAsync(It.IsNotNull<string>(), It.IsNotNull<string>())).ReturnsAsync(loanDetail);
             paymentService.Setup(x => x.SavePaymentAsync(It.IsNotNull<string>(), It.IsNotNull<string>(), It.IsNotNull<Payment>())).ReturnsAsync(true);
+            
             var response = await paymentRequestHandler.ProcessAsync();
+
             response.Should().NotBeNull();
             response.IsSuccess.Should().Be(true);
         }
@@ -75,7 +121,9 @@ namespace Ledger.Test.Handlers
             var loanDetail = loanRequest.ToLoanDetailModel();
             loanService.Setup(x => x.GetLoanDetailsAsync(It.IsNotNull<string>(), It.IsNotNull<string>())).ReturnsAsync(loanDetail);
             paymentService.Setup(x => x.SavePaymentAsync(It.IsNotNull<string>(), It.IsNotNull<string>(), It.IsNotNull<Payment>())).ReturnsAsync(false);
+            
             var response = await paymentRequestHandler.ProcessAsync();
+
             response.Should().NotBeNull();
             response.IsSuccess.Should().Be(false);
         }

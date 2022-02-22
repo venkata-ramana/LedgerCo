@@ -32,6 +32,52 @@ namespace Ledger.Test.Handlers
         }
 
         [Fact]
+        public void Should_Throw_ArgumentException_When_InvalidBankNameProvided()
+        {
+            loanRequest.BankName = string.Empty;
+
+            var ex = Assert.Throws<ArgumentException>(() => loanRequestHandler.ValidateRequest());
+
+            Assert.Equal($"{Constants.Actions.Loan}: {Constants.ErrorMessages.BankNameRequired}", ex.Message);
+        }
+
+        [Fact]
+        public void Should_Throw_ArgumentException_When_InvalidLoanTenureProvided()
+        {
+            loanRequest.LoanTenure = 0;
+
+            var ex = Assert.Throws<ArgumentException>(() => loanRequestHandler.ValidateRequest());
+
+            Assert.Equal($"{Constants.Actions.Loan}: {Constants.ErrorMessages.LoanTenureMustBeAtleastOneYear}", ex.Message);
+        }
+
+        [Fact]
+        public void Should_Throw_ArgumentException_When_InvalidPrincipalAmountProvided()
+        {
+            loanRequest.PrincipalAmount = 0;
+
+            var ex = Assert.Throws<ArgumentException>(() => loanRequestHandler.ValidateRequest());
+
+            Assert.Equal($"{Constants.Actions.Loan}: {Constants.ErrorMessages.PrincipleAmountShouldNotBeZero}", ex.Message);
+        }
+
+        [Fact]
+        public void Should_Throw_ArgumentException_When_InvalidRateOfInterestProvided()
+        {
+            loanRequest.RateOfInterest = 0;
+
+            var ex = Assert.Throws<ArgumentException>(() => loanRequestHandler.ValidateRequest());
+
+            Assert.Equal($"{Constants.Actions.Loan}: {Constants.ErrorMessages.RateOfInterestShouldNotBeZero}", ex.Message);
+        }
+
+        [Fact]
+        public void Should_Return_True_When_ValidPaymentRequestProvided()
+        {
+            Assert.True(loanRequestHandler.ValidateRequest());
+        }
+
+        [Fact]
         public void Should_Throw_ArgumentException_When_LoanRecordsNotFoundAsync()
         {
             Func<Task> func = async () => { await loanRequestHandler.ProcessAsync(); };

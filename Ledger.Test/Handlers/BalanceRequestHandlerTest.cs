@@ -36,6 +36,36 @@ namespace Ledger.Test.Handlers
         }
 
         [Fact]
+        public void Should_Throw_ArgumentException_When_InvalidBankNameProvided()
+        {
+            balanceRequest.BankName = string.Empty;
+            var ex = Assert.Throws<ArgumentException>(() => balanceRequestHandler.ValidateRequest());
+            Assert.Equal($"{Constants.Actions.Balance}: {Constants.ErrorMessages.BankNameRequired}", ex.Message);
+        }
+
+        [Fact]
+        public void Should_Throw_ArgumentException_When_InvalidBorrowerProvided()
+        {
+            balanceRequest.BorrowerName = string.Empty;
+            var ex = Assert.Throws<ArgumentException>(() => balanceRequestHandler.ValidateRequest());
+            Assert.Equal($"{Constants.Actions.Balance}: {Constants.ErrorMessages.BorrowerNameRequired}", ex.Message);
+        }
+
+        [Fact]
+        public void Should_Throw_ArgumentException_When_InvalidEmiProvided()
+        {
+            balanceRequest.Emi = -1;
+            var ex = Assert.Throws<ArgumentException>(() => balanceRequestHandler.ValidateRequest());
+            Assert.Equal($"{Constants.Actions.Balance}: {Constants.ErrorMessages.InvalidEmi}", ex.Message);
+        }
+
+        [Fact]
+        public void Should_Return_True_When_ValidBalanceRequestProvided()
+        {
+            Assert.True(balanceRequestHandler.ValidateRequest());
+        }
+
+        [Fact]
         public async Task HandleAsync_ValidBalanceRequest_Returns_ValidBalanceReponse()
         {
             var bankName = "IDIDI";
