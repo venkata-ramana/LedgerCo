@@ -10,23 +10,15 @@ namespace Ledger.Repository
         private static readonly Dictionary<Tuple<string, string>, LoanDetail> _loanRecords = new Dictionary<Tuple<string, string>, LoanDetail>();
 
         public async Task<LoanDetail> GetLoanDetailsAsync(string bankName, string borrowerName)
-
         {
             var loanRecordKey = GetLoanRecordKey(bankName, borrowerName);
-            var existingLoanDetails = await GetLoanRecordAsync(loanRecordKey);
-            return existingLoanDetails;
+            return await GetLoanRecordAsync(loanRecordKey);
         }
 
         public async Task<bool> SaveLoanDetailsAsync(LoanDetail loanDetail)
         {
             var loanRecordKey = GetLoanRecordKey(loanDetail.BankName, loanDetail.BorrowerName);
             return _loanRecords.TryAdd(loanRecordKey, loanDetail);
-        }
-
-        private Tuple<string, string> GetLoanRecordKey(string bankName, string borrowerName)
-        {
-            var loanRecordKey = new Tuple<string, string>(bankName, borrowerName);
-            return loanRecordKey;
         }
 
         public async Task<bool> SavePaymentAsync(string bankName, string borrowerName, Payment payment)
@@ -52,6 +44,11 @@ namespace Ledger.Repository
                 return Task.FromResult(existingLoanDetails);
             }
             return Task.FromResult(existingLoanDetails);
+        }
+
+        private Tuple<string, string> GetLoanRecordKey(string bankName, string borrowerName)
+        {
+            return new Tuple<string, string>(bankName, borrowerName);
         }
     }
 }
