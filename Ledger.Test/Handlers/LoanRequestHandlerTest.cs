@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Ledger.Exceptions;
 using Ledger.Handlers;
 using Ledger.Models;
 using Ledger.Request;
@@ -78,11 +79,11 @@ namespace Ledger.Test.Handlers
         }
 
         [Fact]
-        public void Should_Throw_ArgumentException_When_LoanRecordsNotFoundAsync()
+        public void Should_Throw_DuplicateRecordFoundException_When_LoanRecordsFound()
         {
-            Func<Task> func = async () => { await loanRequestHandler.ProcessAsync(); };
-
-            func.Should().ThrowAsync<ArgumentException>().WithMessage(Constants.ErrorMessages.LoanRecordNotFound);
+            loanService.Setup(x => x.GetLoanDetailsAsync(loanRequest.BankName, loanRequest.BorrowerName)).ReturnsAsync(new LoanDetail());
+            var exception = Assert.ThrowsAsync<DuplicateRecordFoundException>(async () => await loanRequestHandler.ProcessAsync()).GetAwaiter().GetResult();
+            Assert.Equal(String.Format(Constants.ErrorMessages.DuplicateLoanRecord, loanRequest.BankName, loanRequest.BorrowerName), exception.Message);
         }
 
         [Fact]

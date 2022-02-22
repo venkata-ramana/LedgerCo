@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Ledger.Exceptions;
 using Ledger.Handlers;
 using Ledger.Mapper;
 using Ledger.Models;
@@ -100,6 +101,14 @@ namespace Ledger.Test.Handlers
             Func<Task> func = async () => { await paymentRequestHandler.ProcessAsync(); };
 
             func.Should().ThrowAsync<ArgumentException>().WithMessage(Constants.ErrorMessages.InvalidEmi);
+        }
+
+        [Fact]
+        public void Should_Throw_RecordNotFoundException_When_LoanRecordNotFound()
+        {
+            loanService.Setup(x => x.GetLoanDetailsAsync(loanRequest.BankName, loanRequest.BorrowerName)).ReturnsAsync((LoanDetail)null);
+            var exception = Assert.ThrowsAsync<RecordNotFoundException>(async () => await paymentRequestHandler.ProcessAsync()).GetAwaiter().GetResult();
+            Assert.Equal(String.Format(Constants.ErrorMessages.LoanRecordNotFound), exception.Message);
         }
 
         [Fact]

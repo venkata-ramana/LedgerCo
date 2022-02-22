@@ -14,7 +14,7 @@ namespace Ledger.Test.LoanCalculations
             loanDetail.BorrowerName = "DALE";
             loanDetail.LoanTenure = 0;
 
-            Assert.Equal(decimal.Zero, loanDetail.TotalAmountToBeRepaid());
+            Assert.Equal(decimal.Zero, loanDetail.TotalAmountToBeRepaid);
         }
 
         [Fact]
@@ -27,7 +27,7 @@ namespace Ledger.Test.LoanCalculations
             loanDetail.RateOfInterest = 10;
             loanDetail.LoanTenure = 1;
 
-            Assert.Equal(110, loanDetail.TotalAmountToBeRepaid());
+            Assert.Equal(110, loanDetail.TotalAmountToBeRepaid);
         }
 
         [Fact]
@@ -40,7 +40,7 @@ namespace Ledger.Test.LoanCalculations
             loanDetail.RateOfInterest = 10;
             loanDetail.LoanTenure = 0;
 
-            Assert.Equal(decimal.Zero, loanDetail.EmiAmount());
+            Assert.Equal(decimal.Zero, loanDetail.EmiAmount);
         }
 
         [Fact]
@@ -53,7 +53,7 @@ namespace Ledger.Test.LoanCalculations
             loanDetail.RateOfInterest = 10;
             loanDetail.LoanTenure = 1;
 
-            Assert.Equal(10, loanDetail.EmiAmount());
+            Assert.Equal(10, loanDetail.EmiAmount);
         }
 
         [Fact]

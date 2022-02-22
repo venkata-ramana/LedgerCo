@@ -1,4 +1,5 @@
-﻿using Ledger.Request;
+﻿using Ledger.Exceptions;
+using Ledger.Request;
 using Ledger.Response;
 using Ledger.Service;
 using System;
@@ -40,15 +41,15 @@ namespace Ledger.Handlers
         {
             var existingLoanRecord = await LoanService.GetLoanDetailsAsync(balanceRequest.BankName, balanceRequest.BorrowerName);
             if (existingLoanRecord == null)
-                throw new ArgumentException(Constants.ErrorMessages.LoanRecordNotFound);
+                throw new RecordNotFoundException(Constants.ErrorMessages.LoanRecordNotFound);
 
-            var emiAmount = existingLoanRecord.EmiAmount();
+            var emiAmount = existingLoanRecord.EmiAmount;
             var totalAmountByEmi = balanceRequest.Emi * emiAmount;
             var totalLumpSumPaid = existingLoanRecord.LumpSumPaidTillEmiNumber(balanceRequest.Emi);
 
             var totalAmountPaidTillEmi = totalAmountByEmi + totalLumpSumPaid;
 
-            var amountPending = existingLoanRecord.TotalAmountToBeRepaid() - totalAmountPaidTillEmi;
+            var amountPending = existingLoanRecord.TotalAmountToBeRepaid- totalAmountPaidTillEmi;
             var remainingEmis = Math.Ceiling(amountPending / emiAmount);
 
             BalanceResponse balanceResponse = new BalanceResponse()

@@ -1,4 +1,5 @@
-﻿using Ledger.Mapper;
+﻿using Ledger.Exceptions;
+using Ledger.Mapper;
 using Ledger.Request;
 using Ledger.Response;
 using Ledger.Service;
@@ -47,7 +48,7 @@ namespace Ledger.Handlers
         {
             var existingLoanRecord = await LoanService.GetLoanDetailsAsync(paymentRequest.BankName, paymentRequest.BorrowerName);
             if (existingLoanRecord == null)
-                throw new ArgumentException(Constants.ErrorMessages.LoanRecordNotFound);
+                throw new RecordNotFoundException(Constants.ErrorMessages.LoanRecordNotFound);
 
             var totalValidEmis = existingLoanRecord.TotalNoOfEmi;
             if (paymentRequest.Emi > totalValidEmis)

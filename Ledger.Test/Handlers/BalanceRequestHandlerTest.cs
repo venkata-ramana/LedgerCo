@@ -1,6 +1,8 @@
 ﻿using FluentAssertions;
+using Ledger.Exceptions;
 using Ledger.Handlers;
 using Ledger.Mapper;
+using Ledger.Models;
 using Ledger.Request;
 using Ledger.Service;
 using Ledger.Test.Mocks;
@@ -28,11 +30,11 @@ namespace Ledger.Test.Handlers
         }
 
         [Fact]
-        public void Should_Throw_ArgumentException_When_LoanRecordsNotFoundAsync()
+        public void Should_Throw_RecordNotFoundException_When_LoanRecordNotFound()
         {
-            Func<Task> func = async () => { await balanceRequestHandler.ProcessAsync(); };
-
-            func.Should().ThrowAsync<ArgumentException>().WithMessage(Constants.ErrorMessages.LoanRecordNotFound);
+            loanService.Setup(x => x.GetLoanDetailsAsync(balanceRequest.BankName, balanceRequest.BorrowerName)).ReturnsAsync((LoanDetail)null);
+            var exception = Assert.ThrowsAsync<RecordNotFoundException>(async () => await balanceRequestHandler.ProcessAsync()).GetAwaiter().GetResult();
+            Assert.Equal(String.Format(Constants.ErrorMessages.LoanRecordNotFound), exception.Message);
         }
 
         [Fact]

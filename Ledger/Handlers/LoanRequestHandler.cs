@@ -1,4 +1,5 @@
-﻿using Ledger.Mapper;
+﻿using Ledger.Exceptions;
+using Ledger.Mapper;
 using Ledger.Request;
 using Ledger.Response;
 using Ledger.Service;
@@ -42,10 +43,10 @@ namespace Ledger.Handlers
 
             var loanDetail = loanRequest.ToLoanDetailModel();
 
-            if (loanDetail.TotalAmountToBeRepaid() <= 0)
+            if (loanDetail.TotalAmountToBeRepaid<= 0)
                 throw new ArgumentException($"{Constants.Actions.Loan}: {Constants.ErrorMessages.InvalidLoanRequest}");
 
-            if (loanDetail.EmiAmount() <= 0)
+            if (loanDetail.EmiAmount<= 0)
                 throw new ArgumentException($"{Constants.Actions.Loan}: {Constants.ErrorMessages.InvalidEmi}");
 
             return true;
@@ -55,9 +56,7 @@ namespace Ledger.Handlers
         {
             var loanDetails = await loanService.GetLoanDetailsAsync(loanRequest.BankName, loanRequest.BorrowerName);
             if (loanDetails != null)
-            {
-                throw new ArgumentException(string.Format(Constants.ErrorMessages.DuplicateLoanRecord, loanRequest.BankName, loanRequest.BorrowerName)) ;
-            }
+                throw new DuplicateRecordFoundException(string.Format(Constants.ErrorMessages.DuplicateLoanRecord, loanRequest.BankName, loanRequest.BorrowerName)) ;
 
             var loanDetail = loanRequest.ToLoanDetailModel();
             var isSaved = await loanService.SaveLoanDetailsAsync(loanDetail);

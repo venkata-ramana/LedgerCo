@@ -22,23 +22,29 @@ namespace Ledger.Models
             {
                 return this.LoanTenure * 12;
             }
-        } 
-
-        public decimal TotalAmountToBeRepaid()
-        {
-            if (this.LoanTenure > 0)
-                return this.PrincipalAmount + ((this.PrincipalAmount * this.LoanTenure * this.RateOfInterest) / 100);
-            else
-                return 0;
         }
 
-        public decimal EmiAmount()
+        public decimal TotalAmountToBeRepaid
         {
-            var totalAmountToBeRepaid = TotalAmountToBeRepaid();
-            if (totalAmountToBeRepaid > 0)
-                return Math.Ceiling(totalAmountToBeRepaid / this.TotalNoOfEmi);
-            else
-                return 0;
+            get
+            {
+                if (this.LoanTenure > 0)
+                    return this.PrincipalAmount + ((this.PrincipalAmount * this.LoanTenure * this.RateOfInterest) / 100);
+                else
+                    return 0;
+            }
+        }
+
+        public decimal EmiAmount
+        {
+            get
+            {
+                var totalAmountToBeRepaid = TotalAmountToBeRepaid;
+                if (totalAmountToBeRepaid > 0)
+                    return Math.Ceiling(totalAmountToBeRepaid / this.TotalNoOfEmi);
+                else
+                    return 0;
+            }
         }
 
         public decimal LumpSumPaidTillEmiNumber(int emiNumber)
