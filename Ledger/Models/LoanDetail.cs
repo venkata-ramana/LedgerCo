@@ -16,6 +16,14 @@ namespace Ledger.Models
 
         public DateTime CreateDate { get; set; }
 
+        public int TotalNoOfEmi
+        {
+            get
+            {
+                return this.LoanTenure * 12;
+            }
+        } 
+
         public decimal TotalAmountToBeRepaid()
         {
             if (this.LoanTenure > 0)
@@ -28,7 +36,7 @@ namespace Ledger.Models
         {
             var totalAmountToBeRepaid = TotalAmountToBeRepaid();
             if (totalAmountToBeRepaid > 0)
-                return Math.Ceiling(totalAmountToBeRepaid / (this.LoanTenure * 12));
+                return Math.Ceiling(totalAmountToBeRepaid / this.TotalNoOfEmi);
             else
                 return 0;
         }

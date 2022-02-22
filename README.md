@@ -34,3 +34,8 @@ Generated report will be avilable here
 ```
 Ledger\Ledger.Test\TestResults
 ```
+
+Questions?
+
+1. no of emi's could be a float number?
+2. can a user take multiple loans from same bank?

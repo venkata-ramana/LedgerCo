@@ -32,7 +32,7 @@ namespace Ledger.Handlers
             if (existingLoanRecord == null)
                 throw new ArgumentException(Constants.ErrorMessages.LoanRecordNotFound);
 
-            var totalValidEmis = existingLoanRecord.LoanTenure * 12;
+            var totalValidEmis = existingLoanRecord.TotalNoOfEmi;
             if (paymentRequest.Emi > totalValidEmis)
                 throw new ArgumentException(Constants.ErrorMessages.InvalidEmi);
             var payment = paymentRequest.ToPaymentModel();
