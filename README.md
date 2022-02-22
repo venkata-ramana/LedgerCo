@@ -38,6 +38,6 @@ Ledger\Ledger.Test\TestResults
 Questions?
 
 1. no of emi's could be a float number?
-2. can a user take multiple loans from same bank?
-3. difference between in lumpsum or emi?
-
+2. should Loan tenure always be in years? can it be months?
+3. can a user take multiple loans from same bank?
+4. difference between lumpsum and emi?
