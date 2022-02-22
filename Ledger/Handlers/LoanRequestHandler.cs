@@ -28,7 +28,7 @@ namespace Ledger.Handlers
             var loanDetails = await loanService.GetLoanDetailsAsync(loanRequest.BankName, loanRequest.BorrowerName);
             if (loanDetails != null)
             {
-                throw new ArgumentException(Constants.ErrorMessages.LoanRecordNotFound);
+                throw new ArgumentException(string.Format(Constants.ErrorMessages.DuplicateLoanRecord, loanRequest.BankName, loanRequest.BorrowerName)) ;
             }
 
             var loanDetail = loanRequest.ToLoanDetailModel();

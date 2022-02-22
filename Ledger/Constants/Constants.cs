@@ -15,6 +15,7 @@
         public static string InvalidEmi = "Requested Emi is invalid";
         public static string ProvideInput = "Please provide inputs";
         public static string InvalidCommand = "Command not identified";
+        public static string DuplicateLoanRecord = "Loan record already found. Bank Name: {0}, Customer Name: {1}";
     }
 
     public static class Actions
